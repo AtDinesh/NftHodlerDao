@@ -14,6 +14,11 @@ contract MockNFTMarketplace {
         tokens[_tokenId] = msg.sender;
     }
 
+    // @dev getPrice(): returns the price of one NFT
+    function getPrice() external pure returns (uint256) {
+        return nftPrice;
+    }
+
     // @dev available(): is the tokenId already sold ?
     function available(uint256 _tokenId) external view returns (bool) {
         return tokens[_tokenId] == address(0);
