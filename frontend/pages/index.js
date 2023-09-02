@@ -128,4 +128,55 @@ export default function Home() {
     }
   }
 
+  // Functions to vote OK or NOK on a proposal
+  async function voteForProposal(proposalId, vote) {
+    setLoading(true);
+    try {
+      const proposal = await fetchProposalById(proposalId);
+
+      if (proposal.canceled) {
+        window.alert("Proposal has been canceled");
+      }
+
+      const tx = await writeContract({
+        address: NFTHodlerDAOAddress,
+        abi: NFTHodlerDAOABI,
+        functionName: "voteOnProposal",
+        args: [proposalId, vote === "OK" ? 0 : 1],
+      });
+
+      await waitForTransaction(tx);
+    } catch(error) {
+      console.error(error);
+      window.alert(error);
+    }
+    setLoading(false);
+  }
+
+  // Function to execute a proposal after deadline has been exceeded
+  async function executeProposal(proposalId) {
+    setLoading(true);
+    try {
+      const proposal = await fetchProposalById(proposalId);
+
+      if (proposal.executed) {
+        window.alert("Proposal has already been executed");
+      }
+
+      const tx = await writeContract({
+        address: NFTHodlerDAOAddress,
+        abi: NFTHodlerDAOABI,
+        functionName: "executeProposal",
+        args: [proposalId],
+      });
+
+      await waitForTransaction(tx);
+    } catch (error) {
+      console.error(error);
+      window.alert(error);
+    }
+    setLoading(false);
+  }
+
+  
 }
