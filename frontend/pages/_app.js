@@ -1,12 +1,15 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import '@/styles/globals.css'
-
+require("dotenv").config();
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { sepolia } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
+import { alchemyProvider } from '@wagmi/core/providers/alchemy'
 
-const { chains, publicClient } = configureChains([sepolia], [publicProvider]);
+
+const { chains, publicClient } = configureChains([sepolia],
+  [alchemyProvider({ apiKey: process.env.ALCHEMY_API_KEY }), publicProvider()],);
 
 const { connectors } = getDefaultWallets({
   appName: "DaoHodlerNFT DAO",
