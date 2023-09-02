@@ -61,5 +61,71 @@ export default function Home() {
     args: [address],
   });
 
-  
+  // Function to make a createProposal transaction in the DAO
+  async function createProposal() {
+    setLoading(true);
+
+    try {
+      const tx = await writeContract({
+        address: NFTHodlerDAOAddress,
+        abi: NFTHodlerDAOABI,
+        functionName: "createProposal",
+        args: [fakeNftTokenId],
+      });
+
+      await waitForTransactionMinedTx(tx);
+    } catch (error) {
+      console.error(error);
+      window.alert(error);
+    }
+    setLoading(false);
+  }
+
+  // Function to fetch a proposal by its ID
+  async function fetchProposalById(id) {
+    try {
+      const proposal = await readContract({
+        address: NFTHodlerDAOAddress,
+        abi: NFTHodlerDAOABI,
+        functionName: "proposals",
+        args: [id],
+      });
+
+      const [nftTokenId, proposer, deadline, okVotes, nokVotes, executed, canceled] = proposal;
+
+      const parsedProposal = {
+        proposalId: id,
+        nftTokenId: nftTokenId.toString(),
+        proposer: proposer.toString(),
+        deadline: new Date(parseInt(deadline.toString()) * 1000),
+        okVotes: okVotes.toString(),
+        nokVotes: nokVotes.toString(),
+        executed: Boolean(executed),
+        canceled: Boolean(canceled),
+      };
+
+      return parsedProposal;
+    } catch (error) {
+      console.error(error);
+      window.alert(error);
+    }
+  }
+
+  async function fetchAllProposals() {
+    try {
+      const proposals = [];
+
+      for (let i = 0; i < numOfProposalsInDao.data; i++) {
+        const proposal = await fetchProposalById(i);
+        proposals.push(proposal);
+      }
+
+      setProposals(proposals);
+      return proposals;
+    } catch (error) {
+      console.error(error);
+      window.alert(error);
+    }
+  }
+
 }
