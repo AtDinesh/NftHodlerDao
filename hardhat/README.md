@@ -17,3 +17,11 @@ In this project, we want to create a DAO for the holders of a specific NFT colle
 A Proposal struct is needed to store all the information about the progress of the proposal.
 
 Since we can have several proposals, we need to maintain a list of proposals.
+
+
+## Verified contracts
+
+You can see the verified contracts and interact with them: 
+- [DaoHodlerNFT](https://sepolia.etherscan.io/address/0x34528B41e8FE72c448b26A25EB9edb0BC0082d96)
+- [MockNFTMarketplace](https://sepolia.etherscan.io/address/0xab1489Ae41459e082937CE21c464234c884aAFA4)
+- [NFTHodlerDAO](https://sepolia.etherscan.io/address/0xBc03987Cfb9f57b582111a8C6a5B8065A15eb674)
