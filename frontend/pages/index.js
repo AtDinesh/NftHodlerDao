@@ -299,5 +299,83 @@ export default function Home() {
     }
   }
 
+  // Piece of code that runs everytime the value of `selectedTab` changes
+  // Used to re-fetch all proposals in the DAO when user switches
+  // to the 'View Proposals' tab
+  useEffect(() => {
+    if (selectedTab === "View proposals") {
+      fetchAllProposals();
+    }
+  }, [selectedTab]);
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return null;
+
+  if (!isConnected)
+    return (
+      <div>
+        <ConnectButton />
+      </div>  
+    );
+
+    return (
+      <div className={inter.className}>
+        <Head>
+          <title>DAOHodlerNFT DAO</title>
+          <meta name="description" content="DaoHodlerNFT DAO" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+  
+        <div className={styles.main}>
+          <div>
+            <h1 className={styles.title}>Welcome to Dao Hodlers!</h1>
+            <div className={styles.description}>Welcome to the DAO!</div>
+            <div className={styles.description}>
+              Your DaoHodler NFT Balance: {nftBalanceOfUser.data.toString()}
+              <br />
+              {daoBalance.data && (
+                <>
+                  Treasury Balance:{" "}
+                  {formatEther(daoBalance.data.value).toString()} ETH
+                </>
+              )}
+              <br />
+              Total Number of Proposals: {numOfProposalsInDAO.data.toString()}
+            </div>
+            <div className={styles.flex}>
+              <button
+                className={styles.button}
+                onClick={() => setSelectedTab("Create Proposal")}
+              >
+                Create Proposal
+              </button>
+              <button
+                className={styles.button}
+                onClick={() => setSelectedTab("View Proposals")}
+              >
+                View Proposals
+              </button>
+            </div>
+            {renderTabs()}
+            {/* Display additional withdraw button if connected wallet is owner */}
+            {address && address.toLowerCase() === daoOwner.data.toLowerCase() ? (
+              <div>
+                {loading ? (
+                  <button className={styles.button}>Loading...</button>
+                ) : (
+                  <button className={styles.button} onClick={withdrawDAOEther}>
+                    Withdraw DAO ETH
+                  </button>
+                )}
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
+      </div>
+    );
 }
