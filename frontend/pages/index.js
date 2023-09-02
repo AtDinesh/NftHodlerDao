@@ -35,14 +35,14 @@ export default function Home() {
   const [selectedTab, setSelectedTab] = useState("");
 
   // Fetch the owner of the DAO
-  const DaoOwner = useContractRead({
+  const daoOwner = useContractRead({
     abi: NFTHodlerDAOABI,
     address: NFTHodlerDAOAddress,
     functionName: "owner",
   });
 
   // Fetch the balance of the DAO
-  const DaoBalance = useBalance({
+  const daoBalance = useBalance({
     address: NFTHodlerDAOAddress
   });
 
@@ -334,7 +334,7 @@ export default function Home() {
             <h1 className={styles.title}>Welcome to Dao Hodlers!</h1>
             <div className={styles.description}>Welcome to the DAO!</div>
             <div className={styles.description}>
-              Your DaoHodler NFT Balance: {nftBalanceOfUser.data.toString()}
+              Your DaoHodler NFT Balance: {nftBalanceOfUser.data}
               <br />
               {daoBalance.data && (
                 <>
@@ -343,7 +343,7 @@ export default function Home() {
                 </>
               )}
               <br />
-              Total Number of Proposals: {numOfProposalsInDAO.data.toString()}
+              Total Number of Proposals: {numOfProposalsInDao.data.toString()}
             </div>
             <div className={styles.flex}>
               <button
