@@ -178,5 +178,25 @@ export default function Home() {
     setLoading(false);
   }
 
-  
+  // Function to withdraw ether from the DAO contract
+  async function withdrawDAOEther(amount) {
+    setLoading(true);
+
+    try {
+      const tx = await writeContract({
+        address: NFTHodlerDAOAddress,
+        abi: NFTHodlerDAOABI,
+        functionName: "withdrawEther",
+        args: [],
+      });
+
+      await waitForTransaction(tx);
+    } catch (error) {
+      console.error(error);
+      window.alert(error);
+    }
+    setLoading(false);
+  } 
+
+
 }
